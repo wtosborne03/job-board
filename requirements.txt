@@ -10,3 +10,4 @@ django-filter
 django-tables2
 django-prose
 Pillow
+djmoney
