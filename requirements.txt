@@ -1,4 +1,4 @@
-Django==4.1.7
+Django==5.1.6
 django-tailwind
 django-crispy-forms
 crispy-tailwind
