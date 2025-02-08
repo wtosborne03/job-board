@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     "tailwind",
     'crispy_forms',
     "crispy_tailwind",
-    "djmoney",
     'address',
     "cities_light",
     "watson",

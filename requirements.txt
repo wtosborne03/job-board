@@ -2,7 +2,6 @@ Django==4.1.7
 django-tailwind
 django-crispy-forms
 crispy-tailwind
-djmoney
 django-address
 django-cities-light
 django-watson
