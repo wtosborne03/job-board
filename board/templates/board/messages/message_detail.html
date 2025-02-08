@@ -1,0 +1,46 @@
+<!-- board/templates/board/messages/message_detail.html -->
+{% extends 'base.html' %}
+
+{% block title %}
+  Message Detail
+{% endblock %}
+
+{% block content %}
+  <div class="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <h2 class="text-2xl font-bold text-center">Message Detail</h2>
+    <div class="mb-4">
+      <span class="flex flex-row justify-between items-center">
+        <span class="flex flex-row justify-between items-center gap-2">
+          {% include 'board/components/_user_tag.html' with user=message.sender %}
+          <i class="fa fa-arrow-right"></i>
+          {% include 'board/components/_user_tag.html' with user=message.recipient %}
+        </span>
+        <span class="text-md text-gray-300 italic">{{ message.timestamp }}</span>
+      </span>
+      {{ message.content|safe }}
+    </div>
+    <span class="w-full flex gap-2 flex-row justify-center items-center text-gray-400"><h3 class="text-lg">Replies</h3><i class="fa fa-reply"></i><div class="w-full h-0.5 bg-gray-200"></div></span>
+    <ul class="divide-y divide-gray-200">
+      {% for reply in message.replies.all %}
+        <li class="py-4">
+          <div>
+            <span class="flex flex-row justify-between items-center">
+              <span class="flex flex-row justify-between items-center gap-2">
+                {% include 'board/components/_user_tag.html' with user=reply.sender %}
+                <i class="fa fa-arrow-right"></i>
+                {% include 'board/components/_user_tag.html' with user=reply.recipient %}
+              </span>
+              <span class="text-md text-gray-300 italic">{{ reply.timestamp }}</span>
+            </span>
+            {{ reply.content|safe }}
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+    <form method="POST" action="{% url 'message_detail' message.pk %}">
+      {% csrf_token %}
+      <input type="hidden" name="parent" value="{{ message.pk }}" />
+      {% crispy form %}
+    </form>
+  </div>
+{% endblock %}

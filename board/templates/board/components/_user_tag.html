@@ -1,0 +1,5 @@
+{% if user == request.user.userprofile %}
+  <div class="italic text-gray-400">Me</div>
+{% else %}
+  <a href="{{ user.get_absolute_url }}" class="italic text-blue-400 hover:text-blue-500 transition-colors">{{ user }}</a>
+{% endif %}

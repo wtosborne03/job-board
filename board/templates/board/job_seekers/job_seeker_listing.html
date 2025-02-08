@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{ job_seeker.user.username }}
+{% endblock %}
+
+{% block content %}
+  <div class="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <span class="flex flex-row items-center justify-between">
+      <h1 class="text-3xl font-bold mb-4">{{ job_seeker.user.username }}</h1>
+      {% if job_seeker.user.profile_picture %}
+        <img src="{{ job_seeker.user.profile_picture.url }}" alt="{{ job_seeker.user.username }}" class="w-16 h-16 object-cover rounded-full" />
+      {% endif %}
+    </span>
+    <p class="text-gray-700 mb-4">
+      <strong>Education:</strong> {{ job_seeker.education }}
+    </p>
+    <p class="text-gray-700 mb-4">
+      <strong>Skills:</strong>
+      {% for skill in job_seeker.skills.all %}
+        {{ skill.name }}{% if not forloop.last %}, {% endif %}
+      {% endfor %}
+    </p>
+    <p class="text-gray-700 mb-4">
+      <strong>Resume:</strong> <a href="{{ job_seeker.resume.url }}" class="text-blue-500 underline">Download</a>
+    </p>
+  </div>
+{% endblock %}

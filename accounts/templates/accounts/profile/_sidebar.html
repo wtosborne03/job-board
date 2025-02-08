@@ -1,0 +1,26 @@
+{% url 'profile' as profile %}
+{% url 'edit_company_info' as edit_company_info %}
+{% url 'edit_job_seeker_info' as edit_job_seeker_info %}
+
+
+<div class="w-1/4 bg-gray-200 p-4 rounded-lg h-full">
+    <ul>
+        <li class="mb-2">
+            <a href="{% url 'profile' %}"
+                class="text-blue-500 {% if request.path == profile %}font-bold{% endif %}">Profile</a>
+        </li>
+        {% if user.userprofile.user_type == 'employer' %}
+        <li class="mb-2">
+            <a href="{% url 'edit_company_info' %}"
+                class="text-blue-500 {% if request.path == edit_company_info %}font-bold{% endif %}">Edit Company
+                Info</a>
+        </li>
+        {% elif user.userprofile.user_type == 'job_seeker' %}
+        <li class="mb-2">
+            <a href="{% url 'edit_job_seeker_info' %}"
+                class="text-blue-500 {% if request.path == edit_job_seeker_info %}font-bold{% endif %}">Edit Job
+                Seeker Info</a>
+        </li>
+        {% endif %}
+    </ul>
+</div>

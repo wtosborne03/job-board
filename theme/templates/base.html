@@ -1,0 +1,145 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}
+        Job Board
+      {% endblock %}
+    </title>
+    <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}" />
+    <script src="https://kit.fontawesome.com/8033e250b2.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  </head>
+
+  <body class="bg-gray-100 text-gray-900">
+    <nav class="bg-gray-200 py-4 flex flex-wrap lg:flex-nowrap justify-between items-center h-20">
+      <div class="flex flex-row justify-between items-center w-full lg:w-auto">
+        <h1 class="text-lg font-bold pl-4"><a href="{% url 'home' %}" class="flex flex-row justify-center items-center"><img src="/media/logo.png" class="h-16 hover:scale-110 transition-transform duration-150" /></a></h1>
+        <button class="lg:hidden pr-4 text-gray-900" id="navbar-toggle">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="scale-y-0 px-4 -translate-y-1/2 bg-gray-200 lg:scale-y-100 lg:translate-y-0 lg:flex lg:items-center justify-between w-full lg:bg-none lg:transition-none" id="navbar-menu">
+        <div class="flex flex-row items-center gap-2 justify-stretch lg:justify-start xl:ml-4">
+          <a href="{% url 'home' %}" class="mt-2 lg:mt-0  transition-colors w-full lg:w-auto  border-slate-800 border-opacity-0 border-b-2 hover:text-slate-500 duration-100 text-slate-800 font-bold py-2 px-4 cursor-pointer {% if active_tab == 'home' %}border-opacity-100{% endif %}">Home</a>
+          {% if user.is_authenticated %}
+            <a href="{% url 'inbox' %}" class="mt-2 lg:mt-0  transition-colors  w-full lg:w-auto border-slate-800 border-opacity-0 border-b-2 hover:text-slate-500 duration-100 text-slate-800 font-bold py-2 px-4 cursor-pointer {% if active_tab == 'messages' %}border-opacity-100{% endif %}">Messages</a>
+            {% if user.userprofile.user_type == 'employer' %}
+              <a href="{% url 'create_listing' %}" class="mt-2 lg:mt-0 w-full lg:w-auto bg-green-600 hover:bg-green-700 transition-colors duration-100 text-white font-bold py-2 px-4 rounded cursor-pointer">Create Listing</a>
+            {% else %}
+              <a href="{% url 'my_applications' %}" class="mt-2 lg:mt-0  transition-colors w-full lg:w-auto border-slate-800 border-opacity-0 border-b-2 hover:text-slate-500 duration-100 text-slate-800 font-bold py-2 px-4 cursor-pointer {% if active_tab == 'dashboard' %}border-opacity-100{% endif %}">Applications</a>
+            {% endif %}
+          {% endif %}
+        </div>
+        <div class="flex flex-col lg:flex-row lg:items-center mt-2 lg:mt-0 lg:ml-8 pb-2 lg:pb-0">
+          <form method="get" action="{% url 'search' %}" class="flex flex-row justify-between items-center gap-1 flex-shrink lg:max-w-64">
+            <input type="text" name="q" placeholder="Search jobs..." class="px-4 py-2 rounded text-black w-full lg:mb-0" />
+            <button type="submit" class="bg-white text-blue-600 px-2 py-1 text-2xl rounded hover:bg-gray-100 transition-colors duration-100">🔎</button>
+          </form>
+          <span class="flex flex-row mt-4 justify-end items-center lg:ml-8 lg:mt-0">
+            {% if user.is_authenticated %}
+              <a href="{% url 'profile' %}" class="mt-2 mr-2 lg:mt-0  transition-colors w-full lg:w-auto border-slate-800 border-opacity-0 border-b-2 hover:text-slate-500 duration-100 text-slate-800 font-bold py-2 px-4 cursor-pointer {% if active_tab == 'profile' %}border-opacity-100{% endif %}">Profile 👤</a>
+              <a href="{% url 'logout' %}" class="lg:mt-0 text-white px-4 py-2 rounded cursor-pointer bg-red-500 hover:bg-red-600 transition-colors duration-100">Logout</a>
+            {% else %}
+              <a href="{% url 'login' %}" class="mt-2 mr-2 lg:mt-0 transition-colors w-full lg:w-auto border-slate-800 border-opacity-0 border-b-2 hover:text-slate-500 duration-100 text-slate-800 font-bold py-2 px-4 cursor-pointer">Login</a>
+              <a href="{% url 'register' %}" class="mt-2 lg:mt-0 text-white px-4 py-2 rounded cursor-pointer bg-green-500 hover:bg-green-600 transition-colors duration-100">Register</a>
+            {% endif %}
+          </span>
+        </div>
+      </div>
+    </nav>
+
+    <main class="p-6 lg:transition-none" id="main-content">
+      {% block content %}
+
+      {% endblock %}
+    </main>
+
+    <div class="fixed bottom-0 left-0 w-full p-4">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="message {{ message.tags }} bg-blue-500 text-white p-2 scale-0 rounded mb-2 shadow-lg  transition-all duration-150" id="message-{{ forloop.counter }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <script>
+      function toggleNavbar() {
+        const navbarMenu = document.getElementById('navbar-menu')
+        const mainContent = document.getElementById('main-content')
+      
+        const isCollapsed = navbarMenu.classList.toggle('scale-y-0')
+        navbarMenu.classList.toggle('-translate-y-1/2', isCollapsed)
+        mainContent.classList.toggle('mt-40', !isCollapsed)
+      
+        // Save the state to localStorage
+        localStorage.setItem('navbarCollapsed', isCollapsed)
+      }
+      
+      document.getElementById('navbar-toggle').addEventListener('click', toggleNavbar)
+      
+      let previousWidth = window.innerWidth
+      
+      window.addEventListener('resize', function () {
+        const navbarMenu = document.getElementById('navbar-menu')
+        const mainContent = document.getElementById('main-content')
+        const currentWidth = window.innerWidth
+      
+        if ((previousWidth < 1024 && currentWidth >= 1024) || (previousWidth >= 1024 && currentWidth < 1024)) {
+          if (currentWidth >= 1024) {
+            navbarMenu.classList.remove('scale-y-0', '-translate-y-1/2')
+            mainContent.classList.remove('mt-40')
+          } else {
+            navbarMenu.classList.add('scale-y-0', '-translate-y-1/2')
+            mainContent.classList.remove('mt-40')
+          }
+        }
+      
+        previousWidth = currentWidth
+      })
+      
+      // Function to remove messages after a short time
+      document.addEventListener('DOMContentLoaded', () => {
+        const messages = document.querySelectorAll('.message')
+        messages.forEach((message, index) => {
+          setTimeout(() => {
+            message.classList.remove('scale-0')
+          }, 20 + index * 250) // Stagger the messages
+          setTimeout(() => {
+            message.classList.add('opacity-0')
+            setTimeout(() => {
+              message.remove()
+            }, 300) // Match the transition duration
+          }, 3000 + index * 250) // Stagger the messages
+        })
+      })
+      
+      // Restore the state from localStorage
+      document.addEventListener('DOMContentLoaded', function () {
+        const navbarMenu = document.getElementById('navbar-menu')
+        const mainContent = document.getElementById('main-content')
+        const isCollapsed = localStorage.getItem('navbarCollapsed') === 'true'
+      
+        if (isCollapsed) {
+          navbarMenu.classList.add('scale-y-0', '-translate-y-1/2')
+          mainContent.classList.remove('mt-40')
+        } else if (window.innerWidth < 1024) {
+          navbarMenu.classList.remove('scale-y-0', '-translate-y-1/2')
+          mainContent.classList.add('mt-40')
+        }
+      
+        // Add transitions after initial load
+        setTimeout(() => {
+          navbarMenu.classList.add('transition-transform', 'duration-200')
+          mainContent.classList.add('transition-all', 'duration-200')
+        }, 20)
+      })
+    </script>
+  </body>
+</html>

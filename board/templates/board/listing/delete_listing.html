@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete {{ job.title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <h1 class="text-3xl font-bold mb-4">Delete {{ job.title }}</h1>
+    <p class="text-gray-600 mb-4">Are you sure you want to delete this job listing?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors duration-300">Delete</button>
+        <a href="{% url 'job_detail' job.pk %}" class="inline-block bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors duration-300">Cancel</a>
+    </form>
+</div>
+{% endblock %}

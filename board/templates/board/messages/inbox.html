@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Inbox
+{% endblock %}
+
+{% block content %}
+  <div class="max-w-4xl mx-auto py-6 bg-white rounded-lg shadow-md mb-4">
+    <div class="flex flex-row justify-end px-4 mb-3">
+      <a href="{% url 'send_message' %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Send Message <i class="fa fa-paper-plane"></i></a>
+    </div>
+
+    <ul class="divide-y divide-gray-200">
+      {% for message in m_messages %}
+        <li class="py-3 px-4 hover:bg-gray-50 transition-all duration-150 ease-in-out">
+          <a href="{% url 'message_detail' message.pk %}" class="block">
+            <div class="flex items-center justify-between space-x-4">
+              <span class="flex flex-row justify-center items-center gap-2">
+                <div class="w-5 flex-shrink-0">
+                  {% if message.read %}
+                    <i class="fas fa-envelope-open text-gray-400"></i>
+                  {% else %}
+                    <i class="fas fa-envelope text-blue-500"></i>
+                  {% endif %}
+                </div>
+
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-medium text-gray-900 truncate">{{ message.sender }}</p>
+                </div>
+
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm text-gray-500 truncate">{{ message.content|safe|striptags|truncatechars:50 }}</p>
+                </div>
+              </span>
+
+              <div class="flex-shrink-0">
+                <p class="text-sm text-gray-500 whitespace-nowrap">{{ message.timestamp }}</p>
+              </div>
+            </div>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}

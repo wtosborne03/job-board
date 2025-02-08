@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Profile
+{% endblock %}
+
+{% block content %}
+  <div class="flex w-full h-full">
+    <!-- Sidebar -->
+    {% include 'accounts/profile/_sidebar.html' %}
+
+    <!-- Profile Content -->
+    <div class="w-3/4 bg-white p-6 rounded-lg shadow-md ml-4">
+      <h2 class="text-2xl font-bold">Hello, {{ user.username }}!</h2>
+      <p>Email: {{ user.email }}</p>
+      <p>Account Type: {{ user.userprofile.user_type }}</p>
+      <p>
+        <a href="{{ user.userprofile.get_absolute_url }}" class="text-blue-500 underline">Preview Profile Page</a>
+      </p>
+    </div>
+  </div>
+{% endblock %}

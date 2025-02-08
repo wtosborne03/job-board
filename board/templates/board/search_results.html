@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto p-6 ">
+    <h1 class="text-3xl font-bold mb-4">Search Results for "{{ query }}"</h1>
+    <div class="flex flex-col items-center gap-6">
+        {% if results %}
+            {% for result in results %}
+                <a href="{{ result.url }}" class="bg-white p-3 rounded-lg shadow-md hover:shadow-lg cursor-pointer transition-shadow duration-300 w-full flex flex-col justify-center items-start gap-2">
+                    <span class="flex flex-row justify-between items-center w-full">
+                        <span class="flex flex-row justify-center items-center gap-2">
+                            {% if result.object.thumbnail %}
+                            <img src="{{ result.object.thumbnail.url }}" alt="{{ result.title }}" class="w-12 h-12 object-cover rounded-full">
+                            {% else %}
+                            <img src="https://cdn-icons-png.flaticon.com/512/9631/9631363.png" alt="{{ result.title }}" class="w-12 h-12 object-cover rounded-full">
+                            {% endif %}
+                    <h3 class="text-xl font-bold">{{ result.title }}</h3>
+                        </span>
+                    <p class="text-gray-600 mb-1">{{ result.object.s_type }}</p>
+                    </span>
+                    <p class="text-gray-600"><strong>Description:</strong> {{ result.object.s_description }}</p>
+                </a>
+            {% endfor %}
+        {% else %}
+            <div class="col-span-full text-center text-gray-500">No job listings found.</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Home
+{% endblock %}
+
+{% block content %}
+  <form method="get" class="mb-4">
+    <div class="flex flex-row items-start gap-4 justify-start">
+      {% crispy filter.form %}
+    </div>
+  </form>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 mt-4">
+    {% for job in job_listings %}
+      {% include 'board/components/_job_card.html' %}
+    {% empty %}
+      <div class="col-span-full text-center text-gray-500">No job listings found.</div>
+    {% endfor %}
+  </div>
+{% endblock %}

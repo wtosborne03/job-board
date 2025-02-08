@@ -1,0 +1,30 @@
+{% load humanize %}
+
+<a href="{% url 'job_detail' job.pk %}" class="bg-white p-6 rounded-lg shadow-md hover:shadow-2xl cursor-pointer transition-shadow duration-300">
+  <span class="flex flex-row justify-between items-center">
+    <h3 class="text-xl font-bold mb-2">{{ job.title }}</h3>
+    <span class="text-green-500 font-bold">${{ job.salary_min|intcomma }} - ${{ job.salary_max|intcomma }}</span>
+  </span>
+  <p class="text-gray-600 mb-2">
+    <strong>Category:</strong> {{ job.category.name }}
+  </p>
+  <span class="flex flex-row items-center justify-start mb-2">
+    {% if job.category %}
+      <span class="bg-gray-700 text-white p-1 rounded-lg">{{ job.category.name }}</span>
+    {% endif %}
+    {% if job.is_remote %}
+      <span class="bg-blue-500 text-white p-1 rounded-lg ml-2">Remote</span>
+    {% endif %}
+    {% if job.get_employment_type_display %}
+      <span class="bg-gray-500 text-white p-1 rounded-lg ml-2">{{ job.get_employment_type_display }}</span>
+    {% endif %}
+  </span>
+  <p class="text-gray-600 mb-2">
+    <strong>Experience Required:</strong> {{ job.get_experience_level_display }}
+  </p>
+  <p class="text-gray-600 mb-2">📍 {{ job.location }}</p>
+  <p class="text-gray-500 italic">Posted on: {{ job.posted_date }}</p>
+  {% if user.is_authenticated and user.employerprofile == job.employer %}
+    <span class="bg-red-500 text-white p-1 rounded-lg ml-2">{{ job.applications.count }} Applications</span>
+  {% endif %}
+</a>
