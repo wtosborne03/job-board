@@ -55,6 +55,9 @@ INSTALLED_APPS = [
 
 
 ]
+CSRF_TRUSTED_ORIGINS = [
+    'https://job-board-828m.onrender.com',
+]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
