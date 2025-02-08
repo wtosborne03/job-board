@@ -8,3 +8,4 @@ django-watson
 django-autocomplete-light
 django-filter
 django-tables2
+django-prose
