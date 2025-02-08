@@ -236,8 +236,7 @@ def send_message_view(request):
             if parent:
                 message.recipient = parent.sender if parent.sender != request.user.userprofile else parent.recipient
                 message.parent = parent
-            else:
-                message.recipient = recipient
+
             message.save()
             messages.info(request, 'Message Sent')
             return redirect('inbox')

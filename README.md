@@ -2,3 +2,5 @@
 Hobby Project for a job board, including search and messaging functionality
 
 Live Version running here: [Job Board](https://job-board-828m.onrender.com)
+
+Live version is running on cold boot, responses will be slow
