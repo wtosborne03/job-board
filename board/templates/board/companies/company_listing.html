@@ -1,26 +1,30 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ company.company_name }}{% endblock %}
+{% block title %}
+  {{ company.company_name }}
+{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
+  <div class="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
     <span class="flex flex-row items-center justify-between">
-        <h1 class="text-3xl font-bold mb-4">{{ company.company_name }}</h1>
-        <img src="{{ company.thumbnail.url }}" alt="{{ company.company_name }}" class="w-16 h-16 object-cover rounded-full">
-        </span>
+      <h1 class="text-3xl font-bold mb-4">{{ company.company_name }}</h1>
+      <img src="{{ company.thumbnail.url }}" alt="{{ company.company_name }}" class="w-24 h-24 object-cover rounded-full" />
+    </span>
     <p class="text-gray-700 mb-4">{{ company.company_description }}</p>
     {% if company.company_website %}
-    <p><strong>Website:</strong> <a href="{{ company.company_website }}" class="text-blue-500 underline">{{ company.company_website }}</a></p>
+      <p>
+        <strong>Website:</strong> <a href="{{ company.company_website }}" class="text-blue-500 underline">{{ company.company_website }}</a>
+      </p>
     {% endif %}
 
     <h2 class="text-2xl font-bold mb-4 mt-12">Job Listings</h2>
-    <ul class="list-disc  gap-4">
-        {% for job in company.job_listings.all %}
+    <ul class="list-disc gap-4">
+      {% for job in company.job_listings.all %}
         <li class="text-gray-600 my-4 flex flex-row justify-between items-center">
-            <a href="{% url 'job_detail' job.pk %}" class="text-blue-500 underline">{{ job.title }}</a>
-            <span>{{ job.location }}</span>
+          <a href="{% url 'job_detail' job.pk %}" class="text-blue-500 underline">{{ job.title }}</a>
+          <span>{{ job.location }}</span>
         </li>
-        {% endfor %}
+      {% endfor %}
     </ul>
-</div>
+  </div>
 {% endblock %}

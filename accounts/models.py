@@ -55,6 +55,9 @@ class JobSeekerProfile(models.Model):
     skills = models.ManyToManyField(
         "board.Skill", blank=True, help_text="Skills you posess"
     )
+    profile = models.ImageField(
+        # Add thumbnail field
+        upload_to="profiles/", blank=True, null=True, verbose_name="Profile Picture")
     education = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):

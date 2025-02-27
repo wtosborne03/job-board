@@ -27,6 +27,7 @@ class ImagePreviewWidget(forms.widgets.FileInput):
         input_html = super().render(name, value, attrs=attrs, **kwargs)
         img_html = ''
         if value and hasattr(value, 'url'):
+
             img_html = mark_safe(f'<img src="{
                                  value.url}" alt="Image preview" style="margin-left: 10px; max-height: 100px;"/>')
         return mark_safe(f'<div class="flex flex-row w-full justify-between items-center">{input_html}{img_html}</div>')

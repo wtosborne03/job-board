@@ -99,16 +99,19 @@ class EmployerInformationForm(forms.ModelForm):
 class JobSeekerOnboardingForm(forms.ModelForm):
     class Meta:
         model = JobSeekerProfile
-        fields = ['resume', 'skills', 'education']
+        fields = ['resume', 'skills', 'education', 'profile']
 
         widgets = {
             'skills': autocomplete.ModelSelect2Multiple(url='skills-autocomplete'),
+            'profile': ImagePreviewWidget()
+
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
+            Field('profile'),
             Field('resume'),
             Field('skills'),
             Field('education'),
@@ -119,15 +122,17 @@ class JobSeekerOnboardingForm(forms.ModelForm):
 class JobSeekerInformationForm(forms.ModelForm):
     class Meta:
         model = JobSeekerProfile
-        fields = ['resume', 'skills', 'education']
+        fields = ['resume', 'skills', 'education', 'profile']
         widgets = {
             'skills': autocomplete.ModelSelect2Multiple(url='skills-autocomplete'),
+            'profile': ImagePreviewWidget()
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
+            Field('profile'),
             Field('resume'),
             Field('skills'),
             Field('education'),

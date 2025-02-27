@@ -10,13 +10,14 @@
     {% include 'accounts/profile/_sidebar.html' %}
 
     <!-- Profile Content -->
-    <div class="w-3/4 bg-white p-6 rounded-lg shadow-md ml-4">
-      <h2 class="text-2xl font-bold">Hello, {{ user.username }}!</h2>
-      <p>Email: {{ user.email }}</p>
-      <p>Account Type: {{ user.userprofile.user_type }}</p>
-      <p>
-        <a href="{{ user.userprofile.get_absolute_url }}" class="text-blue-500 underline">Preview Profile Page</a>
-      </p>
+    <div class="w-3/4 bg-white p-8 rounded-lg shadow-lg ml-4">
+      <div class="border-b pb-4 mb-4">
+        <p class="text-gray-600">Email: {{ user.email }}</p>
+        <p class="text-gray-600">Account Type: {{ user.userprofile.user_type }}</p>
+      </div>
+      <div class="pt-4">
+        <a href="{{ user.userprofile.get_absolute_url }}" class="text-blue-600 hover:text-blue-800 underline">Preview Profile Page</a>
+      </div>
     </div>
   </div>
 {% endblock %}
