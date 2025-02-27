@@ -13,6 +13,9 @@ def active_tab(request):
     profile_urls = [
         reverse('profile'),
     ]
+    dashboard_urls = [
+        reverse('my_applications'),
+    ]
 
     active = None
     if any(path == url for url in home_urls):
@@ -21,5 +24,7 @@ def active_tab(request):
         active = 'messages'
     if any(path.startswith(url) for url in profile_urls):
         active = 'profile'
+    if any(path.startswith(url) for url in dashboard_urls):
+        active = 'dashboard'
 
     return {'active_tab': active}

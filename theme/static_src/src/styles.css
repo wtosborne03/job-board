@@ -12,6 +12,10 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
+select {
+    background-image: none;
+}
+
 .select2-selection {
     height: 2.7rem !important;
 }
@@ -44,4 +48,12 @@
 
 .select2-container--default .select2-results__option[aria-selected=true] {
     background-color: #ddd;
+}
+
+.table-cell {
+    @apply border px-2 py-1;
+}
+
+.table-cell-header {
+    @apply border px-2 py-1 text-gray-700;
 }

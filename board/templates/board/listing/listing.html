@@ -13,52 +13,87 @@
           <a href="{% url 'edit_job' job.pk %}" class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-300">Edit Job</a>
           <a href="{% url 'delete_job' job.pk %}" class="inline-block bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors duration-300 ml-2">Delete Job</a>
         </span>
-      {% endif %}
-      {% if is_job_seeker %}
-        <a href="{% url 'apply_job' job.pk %}" class="inline-block bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition-colors duration-300">Apply</a>
+      {% else %}
+        {% include 'board/components/_employer_card.html' with employer=job.employer %}
       {% endif %}
     </span>
-    {% if is_owner %}
-      <p class="my-4">👀 {{ job.views_count }} views</p>
-    {% endif %}
-    <p>
-      Employer: <a class="text-blue-500 underline my-8" href="{% url 'company_detail' job.employer.pk %}">{{ job.employer.company_name }}</a>
-    </p>
+
+    <!-- filepath: /Users/williamosborne/job-board/board/templates/board/listing/listing.html -->
+    <div class="mb-6 mt-4">
+      <h2 class="text-xl font-semibold mb-2">Job Details</h2>
+      <table class="min-w-full bg-white">
+        <tbody>
+          <tr>
+            <td class="table-cell-header">Posted on</td>
+            <td class="table-cell">{{ job.posted_date }}</td>
+          </tr>
+          <tr>
+            <td class="table-cell-header">Location</td>
+            <td class="table-cell">{{ job.location }}</td>
+          </tr>
+          <tr>
+            <td class="table-cell-header">Salary</td>
+            <td class="table-cell">${{ job.salary_min }} - ${{ job.salary_max }}</td>
+          </tr>
+          <tr>
+            <td class="table-cell-header">Employment Type</td>
+            <td class="table-cell">{{ job.get_employment_type_display }}</td>
+          </tr>
+          <tr>
+            <td class="table-cell-header">Experience Level</td>
+            <td class="table-cell">{{ job.get_experience_level_display }}</td>
+          </tr>
+          <tr>
+            <td class="table-cell-header">Education Required</td>
+            <td class="table-cell">{{ job.education_required }}</td>
+          </tr>
+          <tr>
+            <td class="table-cell-header">Skills Required</td>
+            <td class="table-cell">{{ job.skills_required.all|join:', ' }}</td>
+          </tr>
+          <tr>
+            <td class="table-cell-header">Benefits</td>
+            <td class="table-cell">{{ job.benefits.all|join:', ' }}</td>
+          </tr>
+          <tr>
+            <td class="table-cell-header">Status</td>
+            <td class="table-cell">{{ job.get_status_display }}</td>
+          </tr>
+          <tr>
+            <td class="table-cell-header">Remote</td>
+            <td class="table-cell">{{ job.is_remote|yesno:'Yes,No' }}</td>
+          </tr>
+          {% if job.is_remote %}
+            <tr>
+              <td class="table-cell-header">Remote Type</td>
+              <td class="table-cell">{{ job.get_remote_type_display }}</td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
 
     <div class="mb-6 mt-4">
-      <h2 class="text-2xl font-semibold mb-2">Job Details</h2>
-      <p class="text-gray-600 mb-4">{{ job.description }}</p>
-      <p class="text-gray-500 mb-4">Posted on: {{ job.posted_date }}</p>
-      <p class="text-gray-500 mb-4">Location: {{ job.location }}</p>
-      <p class="text-gray-500 mb-4">Salary: ${{ job.salary_min }} - ${{ job.salary_max }}</p>
-      <p class="text-gray-500 mb-4">Employment Type: {{ job.get_employment_type_display }}</p>
-      <p class="text-gray-500 mb-4">Experience Level: {{ job.get_experience_level_display }}</p>
-      <p class="text-gray-500 mb-4">Education Required: {{ job.education_required }}</p>
-      <p class="text-gray-500 mb-4">Skills Required: {{ job.skills_required.all|join:', ' }}</p>
-      <p class="text-gray-500 mb-4">Benefits: {{ job.benefits.all|join:', ' }}</p>
-      <p class="text-gray-500 mb-4">Status: {{ job.get_status_display }}</p>
+      <h2 class="text-xl font-semibold mb-2">Description</h2>
+      {{ job.description }}
     </div>
 
-    <div class="mb-6">
-      <h2 class="text-2xl font-semibold mb-2">Application Details</h2>
-      <p class="text-gray-500 mb-4">
-        Application URL: <a href="{{ job.application_url }}" class="text-blue-500 underline">{{ job.application_url }}</a>
-      </p>
-      <p class="text-gray-500 mb-4">Application Instructions: {{ job.application_instructions }}</p>
-      <p class="text-gray-500 mb-4">Hiring Process: {{ job.hiring_process }}</p>
-    </div>
-
-    <div class="mb-6">
-      <h2 class="text-2xl font-semibold mb-2">Remote Work</h2>
-      <p class="text-gray-500 mb-4">Remote: {{ job.is_remote|yesno:'Yes,No' }}</p>
-      {% if job.is_remote %}
-        <p class="text-gray-500 mb-4">Remote Type: {{ job.get_remote_type_display }}</p>
-      {% endif %}
-    </div>
+    {% if is_job_seeker %}
+      <div class="flex flex-row justify-end items-center gap-2">
+        <a href="{% url 'apply_job' job.pk %}" class="inline-block bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition-colors duration-300">Apply</a>
+      </div>
+    {% endif %}
 
     {% if is_owner %}
+      <div class="mb-6">
+        <h2 class="text-xl font-semibold mb-2">Stats</h2>
+        <p class="my-4">👀 {{ job.views_count }} views</p>
+      </div>
+
       <div class="mb-6 w-full" id="applications-list">
-        <h2 class="text-2xl font-semibold mb-2">Applications</h2>
+        <div class="flex flex-row justify-start items-center">
+          <h2 class="text-xl font-semibold mb-2">Applications</h2>
+        </div>
         {% load render_table from django_tables2 %}
         {% render_table applications %}
       </div>
